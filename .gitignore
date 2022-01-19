@@ -1,0 +1,12 @@
+pretrain/*
+!pretrain/download_finetuned.sh
+!pretrain/download_pubmedbert.sh
+
+train/output*
+
+predict/output/
+
+__pycache__/
+*/__pycache__/
+runs/
+*/runs/
