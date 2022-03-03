@@ -3,6 +3,7 @@ pretrain/*
 !pretrain/download_pubmedbert.sh
 
 train/output*
+train/*.log
 
 predict/output/
 
