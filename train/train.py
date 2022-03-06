@@ -21,25 +21,22 @@ def run(args):
 
     cleanterms = CLEANTERMS(args.clean_term_path)
     train_control_dict = {'max_sgr_n':1, 'no_short_upper':True, 'only_one':True, 'min_entity_word_count':2}
-    #train_control_dict = {'max_sty_n':1, 'no_short_upper':True, 'only_one':True}
     single_eval_control_dict = {'max_sty_n':1, 'no_short_upper':True}
     multi_eval_control_dict = {'min_sty_n':2, 'no_short_upper':True}
 
-    #train_dataset = Entity_Dataset(args.train_text_file, args.train_match_file, cleanterms, args.model_name_or_path, mask_ratio=args.mask_ratio, control_dict=train_control_dict, debug=args.debug)
     train_dataset = Entity_Dataset(args.train_text_file, args.train_match_file, cleanterms, tokenizer_name=args.model_name_or_path, mask_ratio=args.mask_ratio, control_dict=train_control_dict, debug=args.debug)
-    #single_eval_dataset = Entity_Dataset(args.eval_text_file, args.eval_match_file, cleanterms, args.model_name_or_path, mask_ratio=0.0, control_dict=single_eval_control_dict)
-    #multi_eval_dataset = Entity_Dataset(args.eval_text_file, args.eval_match_file, cleanterms, args.model_name_or_path, mask_ratio=0.0, control_dict=multi_eval_control_dict)
+    single_eval_dataset = Entity_Dataset(args.eval_text_file, args.eval_match_file, cleanterms, args.model_name_or_path, mask_ratio=0.0, control_dict=single_eval_control_dict)
+    multi_eval_dataset = Entity_Dataset(args.eval_text_file, args.eval_match_file, cleanterms, args.model_name_or_path, mask_ratio=0.0, control_dict=multi_eval_control_dict)
 
     train_dataloader = DataLoader(train_dataset, batch_size=args.train_batch_size, shuffle=True, collate_fn=my_collate_fn, num_workers=args.num_workers)
-    #test_dataloader = DataLoader(single_eval_dataset, batch_size=args.train_batch_size, shuffle=False, collate_fn=my_collate_fn, num_workers=args.num_workers)
-    #test_multi_dataloader = DataLoader(multi_eval_dataset, batch_size=args.train_batch_size, shuffle=False, collate_fn=my_collate_fn, num_workers=args.num_workers)
+    test_dataloader = DataLoader(single_eval_dataset, batch_size=args.train_batch_size, shuffle=False, collate_fn=my_collate_fn, num_workers=args.num_workers)
+    test_multi_dataloader = DataLoader(multi_eval_dataset, batch_size=args.train_batch_size, shuffle=False, collate_fn=my_collate_fn, num_workers=args.num_workers)
 
-    if args.output_dir == "":
-        args.output_dir = f"output/lr{args.learning_rate}_mask{args.mask_ratio}"
-        if args.debug:
-            args.output_dir = args.output_dir + "_debugAlpha"
-    #args.output_dir = args.output_dir + "max-sty-n-1"
-    args.output_dir = args.output_dir + "_min-word-count-2"
+    #if args.output_dir == "":
+    #    args.output_dir = f"output/lr{args.learning_rate}_mask{args.mask_ratio}"
+    #    if args.debug:
+    #        args.output_dir = args.output_dir + "_debugAlpha"
+    args.output_dir = args.output_dir + f"_lr{args.learning_rate}_min-word-count-2"
 
     try:
         os.system(f"rm -rf {args.output_dir}")
@@ -101,7 +98,6 @@ def run(args):
                 scheduler.step()  # Update learning rate schedule
                 model.zero_grad()
 
-            '''
             global_step += 1
             if global_step % args.save_step == 0 and global_step > 0:
                 save_path = os.path.join(
@@ -121,16 +117,17 @@ def run(args):
                     writer.add_scalar("mulit_" + key, value, global_step=global_step)
                 print(test_eval_dict)
                 print(multi_eval_dict)
-            '''
+
     save_path = os.path.join(args.output_dir, 'model', 'last.pth')
     torch.save(model, save_path)
+    print(f'Save model to {save_path} successful.')
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--train_text_file', type=str, default='example/data/corpus.txt')
     parser.add_argument('--train_match_file', type=str, default='example/data/corpus_tagged.txt')
-    #parser.add_argument('--eval_text_file', type=str, default='/raid/zheng/type_data/dev_text.txt')
-    #parser.add_argument('--eval_match_file', type=str, default='/raid/zheng/type_data/dev_match.txt')
+    parser.add_argument('--eval_text_file', type=str, default='/raid/zheng/type_data/dev_text.txt')
+    parser.add_argument('--eval_match_file', type=str, default='/raid/zheng/type_data/dev_match.txt')
     parser.add_argument('--clean_term_path', type=str, default="example/cleanterms/cleanterms.txt.example")
 
     parser.add_argument('--debug', action="store_true")

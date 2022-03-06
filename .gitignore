@@ -6,6 +6,7 @@ train/output*
 train/*.log
 
 predict/output/
+predict/output_test/
 
 __pycache__/
 */__pycache__/
