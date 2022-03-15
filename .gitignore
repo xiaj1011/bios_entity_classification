@@ -5,10 +5,12 @@ pretrain/*
 train/output*
 train/*.log
 
-predict/output/
-predict/output_test/
+predict/output*
 
 __pycache__/
 */__pycache__/
 runs/
 */runs/
+
+eval_data/
+tasks/

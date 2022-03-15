@@ -20,7 +20,7 @@ def run(args):
     writer = SummaryWriter(comment='TypeClassificationWithMask')
 
     cleanterms = CLEANTERMS(args.clean_term_path)
-    train_control_dict = {'max_sgr_n':1, 'no_short_upper':True, 'only_one':True, 'min_entity_word_count':2}
+    train_control_dict = {'max_sgr_n':1, 'no_short_upper':True, 'only_one':True, 'min_entity_word_count':1, 'max_sty_n':3}
     single_eval_control_dict = {'max_sty_n':1, 'no_short_upper':True}
     multi_eval_control_dict = {'min_sty_n':2, 'no_short_upper':True}
 
@@ -36,7 +36,7 @@ def run(args):
     #    args.output_dir = f"output/lr{args.learning_rate}_mask{args.mask_ratio}"
     #    if args.debug:
     #        args.output_dir = args.output_dir + "_debugAlpha"
-    args.output_dir = args.output_dir + f"_lr{args.learning_rate}_min-word-count-2"
+    args.output_dir = args.output_dir + f"_lr{args.learning_rate}_minwordcount-1_maxstyn-3"
 
     try:
         os.system(f"rm -rf {args.output_dir}")
@@ -109,14 +109,15 @@ def run(args):
                                             eval_path=os.path.join(args.output_dir, 'single_eval_log.txt'),
                                             predict_path=os.path.join(args.output_dir, 'eval', f'test-{global_step}.csv'),
                                             output_suffix=f"Global step:{global_step}")
-                multi_eval_dict = model_eval(args, model, test_multi_dataloader, eval=True, predict=True, tokenizer=train_dataset.tokenizer, eval_path=os.path.join(args.output_dir, 'multi_eval_log.txt'),
-                           predict_path=os.path.join(args.output_dir, 'eval', f'multi-test-{global_step}.csv'))
+                multi_eval_dict = model_eval(args, model, test_multi_dataloader, eval=True, predict=True, tokenizer=train_dataset.tokenizer, 
+                                            eval_path=os.path.join(args.output_dir, 'multi_eval_log.txt'),
+                                            predict_path=os.path.join(args.output_dir, 'eval', f'multi-test-{global_step}.csv'))
                 for key, value in test_eval_dict.items():
                     writer.add_scalar(key, value, global_step=global_step)
                 for key, value in multi_eval_dict.items():
                     writer.add_scalar("mulit_" + key, value, global_step=global_step)
-                print(test_eval_dict)
-                print(multi_eval_dict)
+                print("single_eval_dict: ", test_eval_dict)
+                print("multi_eval_dict: ", multi_eval_dict)
 
     save_path = os.path.join(args.output_dir, 'model', 'last.pth')
     torch.save(model, save_path)

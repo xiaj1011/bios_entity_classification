@@ -15,6 +15,7 @@ class CLEANTERMS(object):
         self.str2id = {}
         for idx, str_lower in enumerate(str_lower_list):
             if not str_lower in self.str2id:
+                str_lower = str(str_lower)  # 如果term是nan，则pandas自动转为了float类型。这里需要强制转为str类型.
                 self.str2id[str_lower] = []
             self.str2id[str_lower].append(idx)
 
