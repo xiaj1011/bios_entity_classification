@@ -1,9 +1,9 @@
 import json
 
-def get_entity_type_from_train_file():
+def get_entity_type_from_train_file(cleanterms_path):
     sty_set = set()
     sty2sgr = {}
-    with open("/platform_tech/aigraph/cleanterms/cleanterms5_4ex.txt", "r", encoding="utf-8") as f:
+    with open(cleanterms_path, "r", encoding="utf-8") as f:
         lines = f.readlines()[1:]
     for line in lines:
         stys = line.split("\t")[2]
@@ -28,10 +28,10 @@ def get_entity_type_from_json():
     return sty2id, sty2sgr
 
 
-def check_entity_type():
+def check_entity_type(cleanterms_path):
     sty_set = set()
     sty2sgr = {}
-    with open("/platform_tech/aigraph/cleanterms/cleanterms5_4ex.txt", "r", encoding="utf-8") as f:
+    with open(cleanterms_path, "r", encoding="utf-8") as f:
         lines = f.readlines()[1:]
     for line in lines:
         stys = line.split("\t")[2]
@@ -44,6 +44,9 @@ def check_entity_type():
     print(sty2sgr)
 
 if __name__ == "__main__":
-    get_entity_type_from_train_file()
-    check_entity_type()
+    cleanterms_path = "/platform_tech/aigraph/entity_classification/tasks/v1.2/merge_cleanterms.txt"
+    
+    get_entity_type_from_train_file(cleanterms_path)
+    
+    check_entity_type(cleanterms_path)
 
