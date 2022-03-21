@@ -13,3 +13,7 @@ runs/
 */runs/
 
 data/
+tasks/
+
+scripts/other_sty/*txt
+*.idea
