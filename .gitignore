@@ -14,3 +14,6 @@ runs/
 
 eval_data/
 tasks/
+
+scripts/other_sty/*txt
+*.idea
