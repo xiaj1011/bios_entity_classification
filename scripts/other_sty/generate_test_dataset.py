@@ -24,14 +24,14 @@ for tag in taggeds:
 
 print('all terms ', len(all_terms))
 
-test_terms = random.sample(list(taggeds), test_size)
+test_terms = random.sample(list(all_terms), test_size)
 test_terms = set(test_terms)
 print('test terms ', len(test_terms))
 
-with open('eval_v2.txt', 'w') as we1:
-    with open('eval_tagged_v2.txt', 'w') as we2:
-        with open('train_v2.txt', 'w') as wt1:
-            with open('train_tagged_v2', 'w') as wt2:
+with open('term_eval_v2.txt', 'w') as we1:
+    with open('term_eval_tagged_v2.txt', 'w') as we2:
+        with open('term_train_v2.txt', 'w') as wt1:
+            with open('term_train_tagged_v2', 'w') as wt2:
                 train_term_cnt = dict()
                 for i in range(len(texts)):
                     tagged = taggeds[i]
