@@ -28,21 +28,89 @@ test_terms = random.sample(list(all_terms), test_size)
 test_terms = set(test_terms)
 print('test terms ', len(test_terms))
 
-with open('term_eval_v2.txt', 'w') as we1:
-    with open('term_eval_tagged_v2.txt', 'w') as we2:
-        with open('term_train_v2.txt', 'w') as wt1:
-            with open('term_train_tagged_v2', 'w') as wt2:
-                train_term_cnt = dict()
+version = 'v5'
+min_sentsize = 4
+
+with open(f'term_eval_{version}.txt', 'w') as we1:
+    with open(f'term_eval_tagged_{version}.txt', 'w') as we2:
+        with open(f'term_train_{version}.txt', 'w') as wt1:
+            with open(f'term_train_tagged_{version}.txt', 'w') as wt2:
+                term_cnt = dict()
                 for i in range(len(texts)):
                     tagged = taggeds[i]
-                    tag_json = json.loads(tag)
+                    tag_json = json.loads(tagged)
                     term = tag_json['phrase']
+
+                    if term not in term_cnt or term_cnt.get(term, 0) < min_sentsize:
+                        term_cnt[term] = 1 + term_cnt.get(term, 0)
+                    else:
+                        continue
 
                     if term in test_terms:
                         we1.write(texts[i])
-                        we2.write(tagged)
+                        we2.write(json.dumps([tag_json]) + '\n')
                     else:
-                        if term not in train_term_cnt or train_term_cnt.get(term, 0) <= 2:
-                            train_term_cnt[term] = 1 + train_term_cnt.get(term, 0)
-                            wt1.write(texts[i])
-                            wt2.write(tagged)
+                        wt1.write(texts[i])
+                        wt2.write(json.dumps([tag_json]) + '\n')
+
+
+def add_other_for_train():
+    other_terms_path = '/platform_tech/aigraph/entity_classification/data/otherterms_cleaned.txt'
+
+    other_text_path = '/platform_tech/aigraph/entity_classification/data/v1_train_data/train_text.txt'
+    tagged_other_path = '/platform_tech/aigraph/entity_classification/data/v1_train_data/train_text_with_5w_other_tagged.txt'
+
+    other_size = 10 * 10000
+
+    other_terms = set()
+    with open(other_terms_path, 'r') as r:
+        _ = r.readline()
+        for line in r:
+            other_terms.add(line.split('\t')[1])
+
+    otherterms_sents_tagged = dict()
+    with open(tagged_other_path, 'r') as r0:
+        with open(other_text_path, 'r') as r1:
+            cnt = 0
+            for text in r1:
+                tagged = r0.readline()
+                tagged_json = json.loads(tagged)
+
+                if cnt > other_size:
+                    break
+
+                for entity in tagged_json:
+                    term = entity['phrase']
+                    if term not in other_terms:
+                        continue
+                    if term not in otherterms_sents_tagged or len(otherterms_sents_tagged.get(term)) < 10:
+                        cnt += 1
+                        otherterms_sents_tagged[term] = [(text, entity)] + otherterms_sents_tagged.get(term, [])
+
+    print('other term sents ', cnt)
+
+    negative_samples = [(k, v) for k, v in otherterms_sents_tagged.items()]
+    random.shuffle(negative_samples)
+    print('negative samples ', len(negative_samples))
+
+    with open(f'term_train_{version}.txt', 'a+') as w0:
+        with open(f'term_train_tagged_{version}.txt', 'a+') as w1:
+            for term, sents in negative_samples[:int(0.9 * len(negative_samples))]:
+                for sent, entity in sents:
+                    w0.write(sent)
+                    entity['sty'] = 'Other'
+                    w1.write(json.dumps([entity]) + '\n')
+
+    with open(f'term_eval_{version}.txt', 'a+') as w0:
+        with open(f'term_eval_tagged_{version}.txt', 'a+') as w1:
+            for term, sents in negative_samples[int(0.9 * len(negative_samples)):]:
+                for sent, entity in sents:
+                    w0.write(sent)
+                    entity['sty'] = 'Other'
+                    w1.write(json.dumps([entity]) + '\n')
+
+
+add_other_for_train()
+
+print('over')
+
