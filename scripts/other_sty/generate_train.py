@@ -37,7 +37,7 @@ with open('term_indexing_text.txt', 'w') as w0:
                 w0.write(sent)
                 w1.write(json.dumps(entity) + '\n')
 
-with open('terms_cnt.txt', 'w') as w:
+with open('term_cnt.txt', 'w') as w:
     len1cnt = 0
     for term, sents in terms_sents_tagged.items():
         w.write(str(len(sents)) + '\t' + term + '\n')

@@ -34,4 +34,3 @@ with open('term_indexing_text_filtered_by_np.txt', 'w') as w0:
 
 print('terms cnt filtered by np: ', len(terms))
 print('over')
-
