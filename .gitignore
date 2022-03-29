@@ -15,6 +15,9 @@ runs/
 data/
 tasks/
 
-scripts/other_sty/*txt
+scripts/*/*.txt
 *.idea
 *log
+
+*.csv
+
