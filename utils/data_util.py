@@ -105,7 +105,7 @@ class Entity_Dataset(Dataset):
             cum += l
         index_map[cum:] = [j] * (len(line) - cum)
 
-        label = ['Cell']  # 预测阶段，对于没见过的术语，随机赋值一个label
+        label = ['Other']  # 预测阶段，对于没见过的术语，随机赋值一个label
         if self.cleanterms.exist(entity['phrase']):
             label = self.cleanterms.str2sty(entity['phrase'])
 
