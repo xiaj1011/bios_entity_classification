@@ -2,13 +2,14 @@
 import json
 
 xuanti_path = '/platform_tech/aigraph/keyanzhushou/entity_fixer/multi_parse/matched_topic_info_v5_with_entities_position.txt'
+xuanti_path = '/platform_tech/jyren/entities/entity_fixer/multi_parse/80w/all.txt'
 
-with open('xuanti_sentences.txt', 'w') as w0:
-    with open('xuanti_sentences_tagged.txt', 'w') as w1:
+with open('xuanti_sentences_80w.txt', 'w') as w0:
+    with open('xuanti_sentences_tagged_80w.txt', 'w') as w1:
         with open(xuanti_path, 'r') as r:
             for i, line in enumerate(r):
-                if i > 10:
-                    break
+                #if i > 10000:
+                #    break
                 data = json.loads(line)
                 sent = data.get('topic_sentence')
                 entities_with_sty = data.get('entities_with_sty')
