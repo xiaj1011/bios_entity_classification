@@ -10,6 +10,9 @@ Classify medical terms types with context.
 注：我们已经在pubmed语料上fine-tune好了一个模型，下载链接： 
 链接: https://pan.baidu.com/s/1rWjYJIKFJPiqAE7dUL5WiQ  密码: t4gl
 
+cleanterms 下载:
+链接: https://pan.baidu.com/s/1GXnsSa_39nbX_YdJVnQh2g 密码: 4501
+
 ## Citation
 ```text
 @misc{https://doi.org/10.48550/arxiv.2203.09975,
