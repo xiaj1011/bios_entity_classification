@@ -15,4 +15,4 @@ CUDA_VISIBLE_DEVICES='1' python -u train.py \
         --train_epoch 3 \
         --save_step 500 \
         --eval_step 500 \
-        > train_v5.1.log 2>&1 &
+        > train.log 2>&1 &

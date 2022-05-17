@@ -1,6 +1,0 @@
-#!/bin/bash 
-#SBATCH -J entity_cls
-#SBATCH -o slurm.log
-#SBATCH -N 1 --gres=gpu:1
-
-sh train.sh
