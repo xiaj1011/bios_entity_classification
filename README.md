@@ -6,9 +6,8 @@
 - [System Requirements](#system-requirements)
 - [Installation Guide](#installation-guide)
 - [Demo](#demo)
-- [Results](#results)
 - [License](./LICENSE)
-- [Issues](https://github.com/ebridge2/lol/issues)
+- [Issues](https://github.com/bios-xiajun/bios_entity_classification/issues)
 - [Citation](#citation)
 
 ## Overview
