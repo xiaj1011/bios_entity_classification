@@ -21,3 +21,4 @@ scripts/*/*.txt
 
 *.csv
 
+example/cleanterms/*
