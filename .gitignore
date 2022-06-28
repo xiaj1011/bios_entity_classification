@@ -1,7 +1,3 @@
-pretrain/*
-!pretrain/download_finetuned.sh
-!pretrain/download_pubmedbert.sh
-
 train/output*
 train/*.log
 
@@ -12,13 +8,9 @@ __pycache__/
 runs/
 */runs/
 
-data/
-tasks/
-
-scripts/*/*.txt
 *.idea
 *log
 
 *.csv
 
-example/cleanterms/*
+example/cleanterms/cleanterms5.txt
