@@ -18,7 +18,7 @@ UMLS, as they generally do not have ambiguous daily meaning. The semantic types 
 terms were used as the label, and in case a term has multiple semantic types in the UMLS, a 
 random one is used, leveraging the fact that a large sample size can overcome moderate noise 
 in the data. The classification model was trained on PubMedBERT, a BERT model pretrained 
-on PubMed abstracts
+on PubMed abstracts.
 
 ## Repo Contents
 - [pretrain](./pretrain): scripts for downloading pretrained models
@@ -43,13 +43,13 @@ The package is tested on `Linux 20.04` operating system.
 ``
 
 ## Installation Guide
-  1. Download [cleanterms5.txt](https://pan.baidu.com/s/1e7hzcl6ZVTu_euwZBDVV2w) (password: d9ol)
+  1. Download [cleanterms5.txt](https://pan.baidu.com/s/1e7hzcl6ZVTu_euwZBDVV2w) (password: d9ol) and put it under `./example/cleanterms/`.
   2. Download pretrained models: `cd pretrain && sh download_pubmedbert.sh`  
 which will take about a few minutes to complete the download.
      
 ## Demo
 ### Train
-make sure `cleanterms5.txt` has been downloaded and put it under `./example/cleanterms/`  
+make sure `cleanterms5.txt` has been downloaded, and then:  
 
 ```commandline
 1. cd train
